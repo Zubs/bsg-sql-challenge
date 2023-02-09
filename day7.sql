@@ -1,20 +1,13 @@
 SELECT
-    SUM(squared_deviation) / COUNT(*) 'Variance'
+    SUM(squared_deviation) / COUNT(*) 'Variance',
+    SQRT(SUM(squared_deviation) / COUNT(*)) 'Standard deviation'
 FROM
     (
         SELECT
-            POWER(CAST(appearances AS unsigned) - mean, 2) squared_deviation
+            POWER(
+                CAST(appearances AS unsigned) - AVG(CAST(appearances AS unsigned)) OVER (),
+                2
+            ) squared_deviation
         FROM
             wc_players
-            JOIN (
-                SELECT
-                    AVG(appearances) mean
-                FROM
-                    (
-                        SELECT
-                            CAST(appearances AS unsigned) appearances
-                        FROM
-                            wc_players
-                    ) casted_table
-            ) avg_table
     ) squared_deviation_table;

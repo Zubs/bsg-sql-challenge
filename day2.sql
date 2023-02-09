@@ -1,18 +1,13 @@
 CREATE VIEW
     highest_records AS
 SELECT
-    MAX(goals_scored) highest_goals,
-    MAX(assists_provided) highest_assists,
-    MAX(goals_and_assists) highest_goals_and_assists
-FROM
-    (
-        SELECT
-            CAST(goals_scored AS unsigned) goals_scored,
-            CAST(assists_provided AS unsigned) assists_provided,
-            CAST(goals_scored AS unsigned) + CAST(assists_provided AS unsigned) goals_and_assists
-        FROM
-            wc_players
-    ) casted_scores;
+    MAX(CAST(goals_scored AS unsigned)) highest_goals,
+    MAX(CAST(assists_provided AS unsigned)) highest_assists,
+    MAX(
+        CAST(goals_scored AS unsigned) + CAST(assists_provided AS unsigned)
+    ) highest_goals_and_assists
+from
+    wc_players;
 
 (
     SELECT
